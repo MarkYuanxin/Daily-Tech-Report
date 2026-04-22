@@ -1,0 +1,22 @@
+name: Daily Tech Briefing
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # 8am China
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install requirements
+        run: pip install feedparser jinja2 pytz
+      - name: Run script
+        env:
+          YOUR_EMAIL: ${{ secrets.YOUR_EMAIL }}
+          YOUR_PASSWORD: ${{ secrets.YOUR_PASSWORD }}
+        run: python send_daily_briefing.py
